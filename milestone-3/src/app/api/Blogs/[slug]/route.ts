@@ -22,3 +22,31 @@ export async function GET(req: NextRequest, { params }: IParams) {
     )
   }
 }
+
+export async function POST(req: NextRequest, { params }: IParams) {
+  await connectDB()
+  const { slug } = await params
+
+  try {
+    const body = await req.json()
+    const { user, comment } = body
+
+    const blog = await Blog.findOne({ slug }).orFail()
+    
+    blog.comments.push({
+      user,
+      comment,
+      time: new Date()
+    })
+
+    await blog.save()
+    return NextResponse.json(blog.comments)
+
+  } catch (err: unknown) {
+    console.log(`error: ${err}`);
+    return NextResponse.json(
+      { error: "Failed to add comment" },
+      { status: 400 }
+    )
+  }
+}

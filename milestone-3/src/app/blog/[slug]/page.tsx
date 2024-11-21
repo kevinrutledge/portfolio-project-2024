@@ -1,5 +1,6 @@
 import Comment from '@/components/blog/Comment';
 import CommentForm from '@/components/blog/CommentForm';
+import Link from 'next/link';
 
 type Props = { 
   params: { 
@@ -24,7 +25,7 @@ async function getBlog(slug: string) {
     }
     return res.json();
   } catch (err: unknown) {
-    console.log(`error: ${err}`)
+    console.log(`error: ${err}`);
     return null;
   }
 }
@@ -37,16 +38,23 @@ export default async function Blog({ params }: Props) {
     return <div>Blog not found</div>;
   }
 
+  // Split content into paragraphs based on double newlines
+  const paragraphs = blog.content.split('\n\n');
+
   return ( 
     <main className="max-w-4xl mx-auto px-4">
       <h1 className="text-3xl font-utopia text-center mb-4">{blog.title}</h1>
 
       <div className="text-center text-secondary mb-8">
-        <time className="font-crimson">{blog.date}</time>
+        <time className="font-crimson">
+          {new Date(blog.date).toLocaleDateString()}
+        </time>
       </div>
 
-      <div className="font-crimson text-lg space-y-4 whitespace-pre-wrap">
-        {blog.content}
+      <div className="font-crimson text-lg space-y-6">
+        {paragraphs.map((paragraph: string, index: number) => (
+          <p key={index}>{paragraph}</p>
+        ))}
       </div>
 
       <div className="mt-8">
@@ -60,6 +68,15 @@ export default async function Blog({ params }: Props) {
         )}
         
         <CommentForm blogSlug={slug} />
+      </div>
+
+      <div className="mt-12 pt-4 border-t border-border">
+        <Link
+          href="/blog"
+          className="text-primary hover:text-secondary font-crimson"
+        >
+          ← Back to Blog
+        </Link>
       </div>
     </main>
   );

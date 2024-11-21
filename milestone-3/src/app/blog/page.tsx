@@ -29,7 +29,7 @@ export default async function BlogListPage() {
             </h2>
 
             <div className="text-secondary mb-4">
-              <time className="font-crimson">{blog.date}</time>
+              <time className="font-crimson">{new Date(blog.date).toLocaleDateString()}</time>
             </div>
 
             <p className="font-crimson text-lg mb-4">{blog.description}</p>

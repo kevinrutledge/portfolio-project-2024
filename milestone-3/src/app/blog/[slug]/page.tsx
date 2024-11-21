@@ -1,20 +1,29 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import blogs, { Blog, Section } from "@/app/blog/blogData";
-
-interface BlogPostParams {
+type Props = {
   params: {
     slug: string;
   };
+};
+
+async function getBlog(slug: string) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/Blogs/${slug}`, {
+      cache: "no-store",
+    })
+    
+    if (!res.ok) {
+      throw new Error("Failed to fetch blog");
+    }
+    return res.json();
+  } catch {
+    return null;
+  }
 }
 
-export default async function BlogPostPage({ params }: BlogPostParams) {
-  const { slug } = await params;
-
-  const blog: Blog | undefined = blogs.find((b) => b.slug === slug);
+export default async function Blog({ params: { slug } }: Props) {
+  const blog = await getBlog(slug);
 
   if (!blog) {
-    notFound();
+    return <div>Blog not found</div>;
   }
 
   return (
@@ -25,30 +34,8 @@ export default async function BlogPostPage({ params }: BlogPostParams) {
         <time className="font-crimson">{blog.date}</time>
       </div>
 
-      <div className="font-crimson text-lg mb-8">
-        <p>{blog.content.intro}</p>
-      </div>
-
-      <div className="space-y-8">
-        {blog.content.sections.map((section: Section, index: number) => (
-          <section key={index} className="blog-section">
-            <h2 className="text-2xl font-crimson font-bold mb-4">
-              {section.title}
-            </h2>
-            <div className="font-crimson text-lg space-y-4">
-              <p>{section.content}</p>
-            </div>
-          </section>
-        ))}
-      </div>
-
-      <div className="mt-12 pt-4 border-t border-border">
-        <Link
-          href="/blog"
-          className="text-primary hover:text-secondary font-crimson"
-        >
-          ← Back to Blog
-        </Link>
+      <div className="font-crimson text-lg space-y-4 whitespace-pre-wrap">
+        {blog.content}
       </div>
     </main>
   );

@@ -10,7 +10,7 @@ type IParams = {
 
 export async function GET(req: NextRequest, { params }: IParams) {
   await connectDB()
-  const { slug } = params
+  const { slug } = await params;
 
   try {
     const blog = await Blog.findOne({ slug }).orFail()

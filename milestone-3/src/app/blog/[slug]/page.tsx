@@ -23,7 +23,8 @@ async function getBlog(slug: string) {
     if (!res.ok) {
       throw new Error("Failed to fetch blog");
     }
-    return res.json();
+    const data = await res.json();
+    return data;
   } catch (err: unknown) {
     console.log(`error: ${err}`);
     return null;
@@ -39,7 +40,7 @@ export default async function Blog({ params }: Props) {
   }
 
   // Split content into paragraphs based on double newlines
-  const paragraphs = blog.content.split('\n\n');
+  const paragraphs = blog?.content?.split('\n\n') || [blog.description];
 
   return ( 
     <main className="max-w-4xl mx-auto px-4">
@@ -52,9 +53,15 @@ export default async function Blog({ params }: Props) {
       </div>
 
       <div className="font-crimson text-lg space-y-6">
-        {paragraphs.map((paragraph: string, index: number) => (
-          <p key={index}>{paragraph}</p>
-        ))}
+        {paragraphs.length > 0 ? (
+          paragraphs.map((paragraph: string, index: number) => (
+            <p key={index} className="leading-relaxed">
+              {paragraph.trim()}
+            </p>
+          ))
+        ) : (
+          <p>{blog.description}</p>
+        )}
       </div>
 
       <div className="mt-8">

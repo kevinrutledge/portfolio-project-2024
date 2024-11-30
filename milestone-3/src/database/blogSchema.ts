@@ -1,27 +1,49 @@
 import mongoose, { Schema } from "mongoose";
 
-interface IComment {
-    user: string;
-    comment: string;
-    time: Date;
-  }
+// MongoDB/Database types
+export interface MongoComment {
+  _id: mongoose.Types.ObjectId;
+  user: string;
+  comment: string;
+  time: Date;
+}
 
-type Blog = {
+export interface MongoBlog {
+  _id: mongoose.Types.ObjectId;
   title: string;
   slug: string;
   date: Date;
   description: string;
   content: string;
-  comments: IComment[];
-};
+  comments: MongoComment[];
+  __v: number;
+}
 
-const commentSchema = new Schema<IComment>({
-    user: { type: String, required: true },
-    comment: { type: String, required: true },
-    time: { type: Date, default: Date.now }
-  });
+// API/Frontend types
+export interface Comment {
+  id: string;
+  user: string;
+  comment: string;
+  time: string;
+}
 
-const blogSchema = new Schema<Blog>({
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  description: string;
+  content: string;
+  comments: Comment[];
+}
+
+const commentSchema = new Schema<MongoComment>({
+  user: { type: String, required: true },
+  comment: { type: String, required: true },
+  time: { type: Date, default: Date.now }
+});
+
+const blogSchema = new Schema<MongoBlog>({
   title: { type: String, required: true },
   slug: { type: String, required: true },
   date: { type: Date, required: false, default: new Date() },
@@ -30,8 +52,6 @@ const blogSchema = new Schema<Blog>({
   comments: [commentSchema],
 });
 
-// Define the model using the 'blogs' collection
-const Blog = mongoose.models['blogs'] || mongoose.model('blogs', blogSchema);
+const BlogModel = mongoose.models.blogs || mongoose.model<MongoBlog>('blogs', blogSchema);
 
-export type { IComment };
-export default Blog;
+export default BlogModel;

@@ -33,17 +33,17 @@ export async function POST(req: NextRequest, { params }: IParams) {
 
     const blog = await Blog.findOne({ slug }).orFail()
     
-    blog.comments.push({
+    const newComment = {
       user,
       comment,
       time: new Date()
-    })
-
+    }
+    
+    blog.comments.push(newComment)
     await blog.save()
-    return NextResponse.json(blog.comments)
 
-  } catch (err: unknown) {
-    console.log(`error: ${err}`);
+    return NextResponse.json(newComment)
+  } catch {
     return NextResponse.json(
       { error: "Failed to add comment" },
       { status: 400 }

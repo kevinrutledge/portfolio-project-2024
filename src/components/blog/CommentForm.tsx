@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 interface CommentFormProps {
   blogSlug: string;
@@ -11,7 +11,7 @@ export default function CommentForm({ blogSlug }: CommentFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const isLoading = isSaving || isPending;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,29 +20,29 @@ export default function CommentForm({ blogSlug }: CommentFormProps) {
     const formData = new FormData(form);
 
     setIsSaving(true);
-    setError('');
+    setError("");
 
     try {
       const res = await fetch(`/api/Blogs/${blogSlug}/comments`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
-          user: formData.get('user'),
-          comment: formData.get('comment')
+          user: formData.get("user"),
+          comment: formData.get("comment"),
         }),
         headers: {
-          'Content-Type': 'application/json',
-        }
+          "Content-Type": "application/json",
+        },
       });
 
-      if (!res.ok) throw new Error('Failed to submit comment');
+      if (!res.ok) throw new Error("Failed to submit comment");
 
       form.reset();
       startTransition(() => {
         router.refresh();
       });
     } catch (err) {
-      setError('Failed to post comment. Please try again.');
-      console.error('Error posting comment:', err);
+      setError("Failed to post comment. Please try again.");
+      console.error("Error posting comment:", err);
     } finally {
       setIsSaving(false);
     }
@@ -83,9 +83,7 @@ export default function CommentForm({ blogSlug }: CommentFormProps) {
         />
       </div>
 
-      {error && (
-        <p className="text-red-500 font-crimson">{error}</p>
-      )}
+      {error && <p className="text-red-500 font-crimson">{error}</p>}
 
       <button
         type="submit"
@@ -94,7 +92,7 @@ export default function CommentForm({ blogSlug }: CommentFormProps) {
                  hover:bg-secondary transition-colors disabled:opacity-50
                  disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Posting...' : 'Post Comment'}
+        {isLoading ? "Posting..." : "Post Comment"}
       </button>
     </form>
   );

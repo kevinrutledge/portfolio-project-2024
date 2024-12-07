@@ -1,5 +1,5 @@
-import AboutSection from '@/components/home/AboutSection'
-import ContactInfo from '@/components/home/ContactInfo'
+import AboutSection from "@/components/home/AboutSection";
+import ContactInfo from "@/components/home/ContactInfo";
 
 export default function Home() {
   return (
@@ -12,5 +12,5 @@ export default function Home() {
         <ContactInfo />
       </div>
     </main>
-  )
+  );
 }

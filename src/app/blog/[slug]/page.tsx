@@ -1,15 +1,35 @@
-import { Metadata } from 'next';
-import Comment from '@/components/blog/Comment';
-import CommentForm from '@/components/blog/CommentForm';
-import Link from 'next/link';
-import connectDB from '@/database/db';
-import BlogModel, { MongoBlog, Blog } from '@/database/blogSchema';
-import { transformBlog } from '@/lib/transforms';
+import { Metadata } from "next";
+import Comment from "@/components/blog/Comment";
+import CommentForm from "@/components/blog/CommentForm";
+import Link from "next/link";
+import connectDB from "@/database/db";
+import BlogModel, { MongoBlog, Blog } from "@/database/blogSchema";
+import { transformBlog } from "@/lib/transforms";
 
 interface Props {
   params: {
     slug: string;
   };
+}
+
+function formatBlogContent(content: string) {
+  const paragraphs = content.split("\n\n");
+  return paragraphs.map((paragraph) => {
+    // Check if paragraph starts with what looks like a title
+    const lines = paragraph.split("\n");
+    if (lines.length > 1 && !lines[0].endsWith(".")) {
+      // First line is likely a title
+      return {
+        title: lines[0],
+        content: lines.slice(1).join("\n").trim(),
+      };
+    }
+    // Regular paragraph without title
+    return {
+      title: null,
+      content: paragraph.trim(),
+    };
+  });
 }
 
 async function getBlog(slug: string): Promise<Blog | null> {
@@ -19,7 +39,7 @@ async function getBlog(slug: string): Promise<Blog | null> {
     if (!doc) return null;
     return transformBlog(doc as MongoBlog);
   } catch (err) {
-    console.error('Error fetching blog:', err);
+    console.error("Error fetching blog:", err);
     return null;
   }
 }
@@ -27,8 +47,8 @@ async function getBlog(slug: string): Promise<Blog | null> {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const blog = await getBlog(await params.slug);
   return {
-    title: blog?.title ?? 'Blog Not Found',
-    description: blog?.description ?? ''
+    title: blog?.title ?? "Blog Not Found",
+    description: blog?.description ?? "",
   };
 }
 
@@ -38,13 +58,15 @@ export default async function BlogPage({ params }: Props) {
   if (!blog) {
     return (
       <main className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-utopia text-center mb-8">Blog Not Found</h1>
-        <p className="text-center">The requested blog post could not be found.</p>
+        <h1 className="text-3xl font-utopia text-center mb-8">
+          Blog Not Found
+        </h1>
+        <p className="text-center">
+          The requested blog post could not be found.
+        </p>
       </main>
     );
   }
-
-  const paragraphs = blog.content.split('\n\n') || [blog.description];
 
   return (
     <main className="max-w-4xl mx-auto px-4">
@@ -57,10 +79,13 @@ export default async function BlogPage({ params }: Props) {
       </div>
 
       <div className="font-crimson text-lg space-y-6">
-        {paragraphs.map((paragraph, index) => (
-          <p key={index} className="leading-relaxed">
-            {paragraph.trim()}
-          </p>
+        {formatBlogContent(blog.content).map((paragraph, index) => (
+          <div key={index} className="leading-relaxed">
+            {paragraph.title && (
+              <h3 className="font-bold text-xl mb-2">{paragraph.title}</h3>
+            )}
+            <p>{paragraph.content}</p>
+          </div>
         ))}
       </div>
 
@@ -73,12 +98,15 @@ export default async function BlogPage({ params }: Props) {
         ) : (
           <p>No comments yet.</p>
         )}
-        
+
         <CommentForm blogSlug={await params.slug} />
       </div>
 
       <div className="mt-12 pt-4 border-t border-border">
-        <Link href="/blog" className="text-primary hover:text-secondary font-crimson">
+        <Link
+          href="/blog"
+          className="text-primary hover:text-secondary font-crimson"
+        >
           ← Back to Blog
         </Link>
       </div>

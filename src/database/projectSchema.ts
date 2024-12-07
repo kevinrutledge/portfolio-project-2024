@@ -22,12 +22,12 @@ type Project = {
 
 const linkSchema = new Schema<ILink>({
   url: { type: String, required: true },
-  label: { type: String, required: true }
+  label: { type: String, required: true },
 });
 
 const technologySchema = new Schema<ITechnology>({
   name: { type: String, required: true },
-  category: { type: String, required: true }
+  category: { type: String, required: true },
 });
 
 const projectSchema = new Schema<Project>({
@@ -37,10 +37,11 @@ const projectSchema = new Schema<Project>({
   description: { type: String, required: true },
   content: { type: String, required: true },
   technologies: [technologySchema],
-  links: [linkSchema]
+  links: [linkSchema],
 });
 
-const Project = mongoose.models['projects'] || mongoose.model('projects', projectSchema);
+const Project =
+  mongoose.models["projects"] || mongoose.model("projects", projectSchema);
 
 export type { ITechnology, ILink, Project };
 export default Project;

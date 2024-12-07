@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export default function ContactInfo() {
   return (
@@ -6,8 +6,8 @@ export default function ContactInfo() {
       <h2 className="font-bold text-xl mb-4">Contact Info:</h2>
       <div className="space-y-2">
         <div>
-          <strong>LinkedIn:</strong>{' '}
-          <Link 
+          <strong>LinkedIn:</strong>{" "}
+          <Link
             href="https://linkedin.com/in/kevinrutledge89"
             target="_blank"
             className="text-primary hover:text-secondary transition-colors"
@@ -16,8 +16,8 @@ export default function ContactInfo() {
           </Link>
         </div>
         <div>
-          <strong>GitHub:</strong>{' '}
-          <Link 
+          <strong>GitHub:</strong>{" "}
+          <Link
             href="https://github.com/kevinrutledge"
             target="_blank"
             className="text-primary hover:text-secondary transition-colors"
@@ -26,8 +26,8 @@ export default function ContactInfo() {
           </Link>
         </div>
         <div>
-          <strong>Email:</strong>{' '}
-          <a 
+          <strong>Email:</strong>{" "}
+          <a
             href="mailto:kevin.rutledge.89@gmail.com"
             className="text-primary hover:text-secondary transition-colors"
           >
@@ -36,5 +36,5 @@ export default function ContactInfo() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { Comment as CommentType } from '@/database/blogSchema';
+import { Comment as CommentType } from "@/database/blogSchema";
 
 interface CommentProps {
   comment: CommentType;
 }
 
 function formatCommentTime(timestamp: string) {
-  return new Date(timestamp).toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true
+  return new Date(timestamp).toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 }
 

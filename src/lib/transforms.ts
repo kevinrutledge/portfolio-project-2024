@@ -1,11 +1,16 @@
-import type { MongoBlog, Blog, MongoComment, Comment } from '@/database/blogSchema';
+import type {
+  MongoBlog,
+  Blog,
+  MongoComment,
+  Comment,
+} from "@/database/blogSchema";
 
 export function transformComment(comment: MongoComment): Comment {
   return {
     id: comment._id.toString(),
     user: comment.user,
     comment: comment.comment,
-    time: new Date(comment.time).toISOString()
+    time: new Date(comment.time).toISOString(),
   };
 }
 
@@ -17,6 +22,6 @@ export function transformBlog(mongoBlog: MongoBlog): Blog {
     date: new Date(mongoBlog.date).toISOString(),
     description: mongoBlog.description,
     content: mongoBlog.content,
-    comments: mongoBlog.comments.map(transformComment)
+    comments: mongoBlog.comments.map(transformComment),
   };
 }

@@ -40,7 +40,7 @@ export interface Blog {
 const commentSchema = new Schema<MongoComment>({
   user: { type: String, required: true },
   comment: { type: String, required: true },
-  time: { type: Date, default: Date.now }
+  time: { type: Date, default: Date.now },
 });
 
 const blogSchema = new Schema<MongoBlog>({
@@ -52,6 +52,7 @@ const blogSchema = new Schema<MongoBlog>({
   comments: [commentSchema],
 });
 
-const BlogModel = mongoose.models.blogs || mongoose.model<MongoBlog>('blogs', blogSchema);
+const BlogModel =
+  mongoose.models.blogs || mongoose.model<MongoBlog>("blogs", blogSchema);
 
 export default BlogModel;

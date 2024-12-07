@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from "next/image";
+import Link from "next/link";
 
 interface Project {
   title: string;
@@ -21,22 +21,20 @@ export default function ProjectCard({ project }: { project: Project }) {
           sizes="(max-width: 768px) 100vw, 300px"
         />
       </div>
-      
+
       <div className="flex-1">
         <h2 className="mb-3">
-          <Link 
+          <Link
             href={project.detailsUrl}
             className="font-crimson text-2xl text-text hover:text-secondary no-underline"
           >
             {project.title}
           </Link>
         </h2>
-        
-        <p className="font-crimson text-lg mb-4">
-          {project.description}
-        </p>
-        
-        <Link 
+
+        <p className="font-crimson text-lg mb-4">{project.description}</p>
+
+        <Link
           href={project.detailsUrl}
           className="font-crimson font-bold text-primary hover:text-secondary transition-colors"
         >
@@ -44,5 +42,5 @@ export default function ProjectCard({ project }: { project: Project }) {
         </Link>
       </div>
     </article>
-  )
+  );
 }

@@ -9,20 +9,20 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        crimson: ['var(--font-crimson)', 'serif'],
-        utopia: ['var(--font-utopia)', 'serif'],
+        crimson: ["var(--font-crimson)", "serif"],
+        utopia: ["var(--font-utopia)", "serif"],
       },
       colors: {
-        'primary': '#1a0dab',
-        'secondary': '#555555',
-        'background': '#ffffff',
-        'text': '#222222',
-        'navbar': '#f4f4f4',
-        'footer': {
-          DEFAULT: '#333333',
-          text: '#ffffff',
+        primary: "#1a0dab",
+        secondary: "#555555",
+        background: "#ffffff",
+        text: "#222222",
+        navbar: "#f4f4f4",
+        footer: {
+          DEFAULT: "#333333",
+          text: "#ffffff",
         },
-        'border': '#cccccc',
+        border: "#cccccc",
       },
     },
   },

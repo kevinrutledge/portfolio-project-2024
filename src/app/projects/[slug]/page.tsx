@@ -1,17 +1,17 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-type Props = { 
-  params: { 
-    slug: string 
-  } 
-}
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
 async function getProject(slug: string) {
   try {
     const res = await fetch(`http://localhost:3000/api/Projects/${slug}`, {
       cache: "no-store",
     });
-    
+
     if (!res.ok) {
       throw new Error("Failed to fetch project");
     }
@@ -30,7 +30,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     return <div>Project not found</div>;
   }
 
-  const paragraphs = project.content.split('\n\n');
+  const paragraphs = project.content.split("\n\n");
 
   return (
     <main className="max-w-4xl mx-auto px-4">

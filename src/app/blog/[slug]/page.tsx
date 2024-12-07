@@ -7,9 +7,9 @@ import BlogModel, { MongoBlog, Blog } from "@/database/blogSchema";
 import { transformBlog } from "@/lib/transforms";
 
 interface Props {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 function formatBlogContent(content: string) {

@@ -3,13 +3,13 @@ import connectDB from "@/database/db";
 import Blog from "@/database/blogSchema";
 
 interface IParams {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function GET(req: NextRequest, { params }: IParams) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   await connectDB();
 
   try {
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, { params }: IParams) {
 }
 
 export async function POST(req: NextRequest, { params }: IParams) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   await connectDB();
 
   try {
@@ -41,8 +41,8 @@ export async function POST(req: NextRequest, { params }: IParams) {
     await blog.save();
 
     return NextResponse.json(newComment);
-  } catch (err) {
-    console.error("Error adding comment:", err);
+  } catch (error) {
+    console.error("Error adding comment:", error);
     return NextResponse.json(
       { error: "Failed to add comment" },
       { status: 400 }

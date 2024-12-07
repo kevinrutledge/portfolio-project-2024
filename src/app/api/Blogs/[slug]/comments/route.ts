@@ -9,11 +9,13 @@ interface IParams {
 }
 
 export async function GET(req: NextRequest, { params }: IParams) {
+  const resolvedParams = await Promise.resolve(params);
   await connectDB();
-  const { slug } = params;
 
   try {
-    const blog = await Blog.findOne({ slug }).select("comments").orFail();
+    const blog = await Blog.findOne({ slug: resolvedParams.slug })
+      .select("comments")
+      .orFail();
     return NextResponse.json(blog.comments);
   } catch {
     return NextResponse.json({ error: "Blog not found" }, { status: 404 });
@@ -21,13 +23,13 @@ export async function GET(req: NextRequest, { params }: IParams) {
 }
 
 export async function POST(req: NextRequest, { params }: IParams) {
+  const resolvedParams = await Promise.resolve(params);
   await connectDB();
-  const { slug } = params;
 
   try {
     const { user, comment } = await req.json();
 
-    const blog = await Blog.findOne({ slug }).orFail();
+    const blog = await Blog.findOne({ slug: resolvedParams.slug }).orFail();
 
     const newComment = {
       user,

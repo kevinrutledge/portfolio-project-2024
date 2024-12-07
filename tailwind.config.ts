@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         crimson: ["var(--font-crimson)", "serif"],
-        utopia: ["var(--font-utopia)", "serif"],
+        utopia: ["var(--font-utopia)", "sans-serif"],
       },
       colors: {
         primary: "#1a0dab",

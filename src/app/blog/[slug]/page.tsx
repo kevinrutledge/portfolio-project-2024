@@ -15,16 +15,13 @@ interface Props {
 function formatBlogContent(content: string) {
   const paragraphs = content.split("\n\n");
   return paragraphs.map((paragraph) => {
-    // Check if paragraph starts with what looks like a title
     const lines = paragraph.split("\n");
     if (lines.length > 1 && !lines[0].endsWith(".")) {
-      // First line is likely a title
       return {
         title: lines[0],
         content: lines.slice(1).join("\n").trim(),
       };
     }
-    // Regular paragraph without title
     return {
       title: null,
       content: paragraph.trim(),
@@ -45,7 +42,8 @@ async function getBlog(slug: string): Promise<Blog | null> {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlog(await params.slug);
+  const resolvedParams = await params;
+  const blog = await getBlog(resolvedParams.slug);
   return {
     title: blog?.title ?? "Blog Not Found",
     description: blog?.description ?? "",
@@ -53,7 +51,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPage({ params }: Props) {
-  const blog = await getBlog(await params.slug);
+  const resolvedParams = await params;
+  const blog = await getBlog(resolvedParams.slug);
 
   if (!blog) {
     return (
@@ -99,7 +98,7 @@ export default async function BlogPage({ params }: Props) {
           <p>No comments yet.</p>
         )}
 
-        <CommentForm blogSlug={await params.slug} />
+        <CommentForm blogSlug={resolvedParams.slug} />
       </div>
 
       <div className="mt-12 pt-4 border-t border-border">
